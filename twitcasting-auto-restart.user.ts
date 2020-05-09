@@ -12,33 +12,39 @@
 
   let enable = false;
 
+  function isNotNull<A>(a: A | null): a is A {
+    return a !== null;
+  }
+
   function autoClick() {
-    [
+    const el = [
       // 時間になりましたの確認
       "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-modal.tw-confirm-dialog.tw-contents-layer--front > div.tw-confirm-dialog__control > button",
+
+      // 通知を送信しましたの確認
+      "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-modal.tw-confirm-dialog.tw-contents-layer--front > div.tw-confirm-dialog__control > button",
+
+      // 通知してツイート
+      "#broadcastNotificationDialog:not([style^='display: none;']) > div > div > div.modal-footer > button.btn-ok.btn.btn-primary",
 
       // 公開するか(削除)
       "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-modal.tw-broadcast-save-dialog > div > div.tw-broadcast-save-dialog__control-publish-inner.tw-broadcast-save-dialog__control-publish-inner--delete > button",
 
       // 開始
-      "#broadcaster-tool-toolbox-container > div.broadcaster-tool-toolbox > div.broadcaster-tool-toolbox__main-controls > button.btn-success",
-
-      // 通知してツイート
-      "#broadcastNotificationDialog:not([style^='display: none;']) > div > div > div.modal-footer > button.btn-ok.btn.btn-primary",
-
-      // 通知を送信しましたの確認
-      "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-modal.tw-confirm-dialog.tw-contents-layer--front > div.tw-confirm-dialog__control > button",
+      "#broadcaster-tool-toolbox-container > div.broadcaster-tool-toolbox > div.broadcaster-tool-toolbox__main-controls > button.btn-success:enabled",
 
       // コラボ承認
       "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-live-collabo-request > div > div.tw-live-collabo-request__action > button.btn.btn-success.tw-live-collabo-request__action-allow",
     ]
       .map((selector) => document.querySelector(selector))
-      .forEach((el) => {
-        if (el !== null && el instanceof HTMLButtonElement) {
-          console.log("[Twitcasting Auto Restart]", "auto click:", el);
-          el.click();
-        }
-      });
+      .map((el) => (el instanceof HTMLButtonElement ? el : null))
+      .filter(isNotNull)
+      .find((_x) => true);
+
+    if (el !== undefined) {
+      console.log("[Twitcasting Auto Restart]", "auto click:", el);
+      el.click();
+    }
   }
 
   const observer = new MutationObserver(() => {
