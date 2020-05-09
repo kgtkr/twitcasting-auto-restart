@@ -1,0 +1,23 @@
+{
+  "name": "twitcasting-auto-restart",
+  "version": "1.0.0",
+  "description": "",
+  "main": "twitcasting-auto-restart.user.js",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^3.8.3"
+  },
+  "scripts": {
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kgtkr/twitcasting-auto-restart.git"
+  },
+  "author": "kgtkr",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kgtkr/twitcasting-auto-restart/issues"
+  },
+  "homepage": "https://github.com/kgtkr/twitcasting-auto-restart#readme"
+}
