@@ -9,10 +9,7 @@
 (function () {
     "use strict";
     var enable = false;
-    var observer = new MutationObserver(function () {
-        if (!enable) {
-            return;
-        }
+    function autoClick() {
         [
             // 時間になりましたの確認
             "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-modal.tw-confirm-dialog.tw-contents-layer--front > div.tw-confirm-dialog__control > button",
@@ -30,12 +27,18 @@
             .map(function (selector) { return document.querySelector(selector); })
             .forEach(function (el) {
             if (el !== null && el instanceof HTMLButtonElement) {
-                setTimeout(function () {
-                    console.log("[Twitcasting Auto Restart]", "auto click:", el);
-                    el.click();
-                }, 0);
+                console.log("[Twitcasting Auto Restart]", "auto click:", el);
+                el.click();
             }
         });
+    }
+    var observer = new MutationObserver(function () {
+        if (!enable) {
+            return;
+        }
+        setTimeout(function () {
+            autoClick();
+        }, 500);
     });
     observer.observe(document, {
         childList: true,

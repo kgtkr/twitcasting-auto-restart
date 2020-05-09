@@ -12,11 +12,7 @@
 
   let enable = false;
 
-  const observer = new MutationObserver(() => {
-    if (!enable) {
-      return;
-    }
-
+  function autoClick() {
     [
       // 時間になりましたの確認
       "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-modal.tw-confirm-dialog.tw-contents-layer--front > div.tw-confirm-dialog__control > button",
@@ -39,12 +35,20 @@
       .map((selector) => document.querySelector(selector))
       .forEach((el) => {
         if (el !== null && el instanceof HTMLButtonElement) {
-          setTimeout(() => {
-            console.log("[Twitcasting Auto Restart]", "auto click:", el);
-            el.click();
-          }, 0);
+          console.log("[Twitcasting Auto Restart]", "auto click:", el);
+          el.click();
         }
       });
+  }
+
+  const observer = new MutationObserver(() => {
+    if (!enable) {
+      return;
+    }
+
+    setTimeout(() => {
+      autoClick();
+    }, 500);
   });
 
   observer.observe(document, {
