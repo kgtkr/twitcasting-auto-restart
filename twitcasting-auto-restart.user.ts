@@ -68,11 +68,10 @@
       })
       .filter(isNotNull);
 
-    console.log("buttons", new Date(), els);
-
     const el = els.map(({ el }) => el).find((_x) => true);
 
     if (el !== undefined) {
+      console.log("buttons", new Date(), els);
       console.log("[Twitcasting Auto Restart]", "auto click:", el);
       el.click();
     }
