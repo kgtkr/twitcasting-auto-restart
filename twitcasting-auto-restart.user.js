@@ -22,7 +22,7 @@
             // 通知しない
             {
                 name: "notification-dialog-close",
-                selector: "#broadcastNotificationDialog:not([style^='display: none;']) > div > div > div.modal-header > button.close",
+                selector: "#broadcastNotificationDialog[style^='display: block;'] > div > div > div.modal-header > button.close",
             },
             // 公開するか(削除)
             {
