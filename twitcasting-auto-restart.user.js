@@ -55,12 +55,12 @@
             }
         })
             .filter(isNotNull);
-        console.log("buttons", new Date(), els);
         var el = els.map(function (_a) {
             var el = _a.el;
             return el;
         }).find(function (_x) { return true; });
         if (el !== undefined) {
+            console.log("buttons", new Date(), els);
             console.log("[Twitcasting Auto Restart]", "auto click:", el);
             el.click();
         }
