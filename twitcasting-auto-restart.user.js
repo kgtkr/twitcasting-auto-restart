@@ -13,24 +13,53 @@
         return a !== null;
     }
     function autoClick() {
-        var el = [
+        var selectors = [
             // 時間になりましたの確認
-            "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-modal.tw-confirm-dialog.tw-contents-layer--front > div.tw-confirm-dialog__control > button",
-            // 通知を送信しましたの確認
-            "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-modal.tw-confirm-dialog.tw-contents-layer--front > div.tw-confirm-dialog__control > button",
-            // 通知してツイート
-            "#broadcastNotificationDialog:not([style^='display: none;']) > div > div > div.modal-footer > button.btn-ok.btn.btn-primary",
+            {
+                name: "finish-confirm-dialog-ok",
+                selector: "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-modal.tw-confirm-dialog.tw-contents-layer--front > div.tw-confirm-dialog__control > button",
+            },
+            // 通知しない
+            {
+                name: "notification-dialog-close",
+                selector: "#broadcastNotificationDialog:not([style^='display: none;']) > div > div > div.modal-header > button.close",
+            },
             // 公開するか(削除)
-            "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-modal.tw-broadcast-save-dialog > div > div.tw-broadcast-save-dialog__control-publish-inner.tw-broadcast-save-dialog__control-publish-inner--delete > button",
+            {
+                name: "video-delete",
+                selector: "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-modal.tw-broadcast-save-dialog > div > div.tw-broadcast-save-dialog__control-publish-inner.tw-broadcast-save-dialog__control-publish-inner--delete > button",
+            },
             // 開始
-            "#broadcaster-tool-toolbox-container > div.broadcaster-tool-toolbox > div.broadcaster-tool-toolbox__main-controls > button.btn-success:enabled",
+            {
+                name: "start-live",
+                selector: "#broadcaster-tool-toolbox-container > div.broadcaster-tool-toolbox > div.broadcaster-tool-toolbox__main-controls > button.btn-success:enabled",
+            },
             // コラボ承認
-            "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-live-collabo-request > div > div.tw-live-collabo-request__action > button.btn.btn-success.tw-live-collabo-request__action-allow",
-        ]
-            .map(function (selector) { return document.querySelector(selector); })
-            .map(function (el) { return (el instanceof HTMLButtonElement ? el : null); })
-            .filter(isNotNull)
-            .find(function (_x) { return true; });
+            {
+                name: "allow-collabo",
+                selector: "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-live-collabo-request > div > div.tw-live-collabo-request__action > button.btn.btn-success.tw-live-collabo-request__action-allow",
+            },
+        ];
+        var els = selectors
+            .map(function (_a) {
+            var selector = _a.selector, name = _a.name;
+            var el = document.querySelector(selector);
+            if (el !== null && el instanceof HTMLButtonElement) {
+                return {
+                    name: name,
+                    el: el,
+                };
+            }
+            else {
+                return null;
+            }
+        })
+            .filter(isNotNull);
+        console.log("buttons", new Date(), els);
+        var el = els.map(function (_a) {
+            var el = _a.el;
+            return el;
+        }).find(function (_x) { return true; });
         if (el !== undefined) {
             console.log("[Twitcasting Auto Restart]", "auto click:", el);
             el.click();
