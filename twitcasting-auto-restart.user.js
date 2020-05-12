@@ -48,6 +48,7 @@
                 return {
                     name: name,
                     el: el,
+                    text: el.innerText,
                 };
             }
             else {
@@ -55,14 +56,11 @@
             }
         })
             .filter(isNotNull);
-        var el = els.map(function (_a) {
-            var el = _a.el;
-            return el;
-        }).find(function (_x) { return true; });
-        if (el !== undefined) {
+        var data = els.find(function (_x) { return true; });
+        if (data !== undefined) {
             console.log("buttons", new Date(), els);
-            console.log("[Twitcasting Auto Restart]", "auto click:", el);
-            el.click();
+            console.log("[Twitcasting Auto Restart]", "auto click:", data.name, data.el);
+            data.el.click();
         }
     }
     var observer = new MutationObserver(function () {

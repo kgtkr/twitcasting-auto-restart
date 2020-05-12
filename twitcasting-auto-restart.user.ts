@@ -61,6 +61,7 @@
           return {
             name,
             el,
+            text: el.innerText,
           };
         } else {
           return null;
@@ -68,12 +69,17 @@
       })
       .filter(isNotNull);
 
-    const el = els.map(({ el }) => el).find((_x) => true);
+    const data = els.find((_x) => true);
 
-    if (el !== undefined) {
+    if (data !== undefined) {
       console.log("buttons", new Date(), els);
-      console.log("[Twitcasting Auto Restart]", "auto click:", el);
-      el.click();
+      console.log(
+        "[Twitcasting Auto Restart]",
+        "auto click:",
+        data.name,
+        data.el
+      );
+      data.el.click();
     }
   }
 
