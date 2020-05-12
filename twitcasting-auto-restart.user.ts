@@ -17,12 +17,13 @@
   }
 
   function autoClick() {
-    const selectors: { name: string; selector: string }[] = [
+    const selectors: { name: string; selector: string; text: string }[] = [
       // 時間になりましたの確認
       {
         name: "finish-confirm-dialog-ok",
         selector:
           "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-modal.tw-confirm-dialog.tw-contents-layer--front > div.tw-confirm-dialog__control > button",
+        text: "閉じる",
       },
 
       // 通知しない
@@ -30,6 +31,7 @@
         name: "notification-dialog-close",
         selector:
           "#broadcastNotificationDialog[style^='display: block;'] > div > div > div.modal-header > button.close",
+        text: "×",
       },
 
       // 公開するか(削除)
@@ -37,6 +39,7 @@
         name: "video-delete",
         selector:
           "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-modal.tw-broadcast-save-dialog > div > div.tw-broadcast-save-dialog__control-publish-inner.tw-broadcast-save-dialog__control-publish-inner--delete > button",
+        text: "削除",
       },
 
       // 開始
@@ -44,6 +47,7 @@
         name: "start-live",
         selector:
           "#broadcaster-tool-toolbox-container > div.broadcaster-tool-toolbox > div.broadcaster-tool-toolbox__main-controls > button.btn-success:enabled",
+        text: "開始",
       },
 
       // コラボ承認
@@ -51,17 +55,21 @@
         name: "allow-collabo",
         selector:
           "#fullscreen-block-id > div > div.tw-overlay.tw-stream-movie-layout__movie-control > div.tw-live-collabo-request > div > div.tw-live-collabo-request__action > button.btn.btn-success.tw-live-collabo-request__action-allow",
+        text: "許可",
       },
     ];
 
     const els = selectors
-      .map(({ selector, name }) => {
+      .map(({ selector, name, text }) => {
         const el = document.querySelector(selector);
-        if (el !== null && el instanceof HTMLButtonElement) {
+        if (
+          el !== null &&
+          el instanceof HTMLButtonElement &&
+          el.innerText === text
+        ) {
           return {
             name,
             el,
-            text: el.innerText,
           };
         } else {
           return null;
