@@ -11,13 +11,20 @@
   "use strict";
 
   let enable = false;
+  // 一度押すと20秒間は押せない
+  let allowClickLive = true;
 
   function isNotNull<A>(a: A | null): a is A {
     return a !== null;
   }
 
   function autoClick() {
-    const selectors: { name: string; selector: string; text: string }[] = [
+    const selectors: {
+      name: string;
+      selector: string;
+      text: string;
+      isStartLive?: boolean;
+    }[] = [
       // 時間になりましたの確認
       {
         name: "finish-confirm-dialog-ok",
@@ -48,6 +55,7 @@
         selector:
           "#broadcaster-tool-toolbox-container > div.broadcaster-tool-toolbox > div.broadcaster-tool-toolbox__main-controls > button.btn-success:enabled",
         text: "開始",
+        isStartLive: true,
       },
 
       // コラボ承認
@@ -60,7 +68,7 @@
     ];
 
     const els = selectors
-      .map(({ selector, name, text }) => {
+      .map(({ selector, name, text, isStartLive }) => {
         const el = document.querySelector(selector);
         if (
           el !== null &&
@@ -70,6 +78,7 @@
           return {
             name,
             el,
+            isStartLive,
           };
         } else {
           return null;
@@ -87,6 +96,17 @@
         data.name,
         data.el
       );
+      if (data.isStartLive) {
+        if (allowClickLive) {
+          allowClickLive = false;
+          setTimeout(() => {
+            allowClickLive = true;
+          }, 1000 * 20);
+        } else {
+          console.log("allowClickLive is false");
+          return;
+        }
+      }
       data.el.click();
     }
   }

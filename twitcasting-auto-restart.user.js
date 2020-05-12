@@ -9,6 +9,8 @@
 (function () {
     "use strict";
     var enable = false;
+    // 一度押すと20秒間は押せない
+    var allowClickLive = true;
     function isNotNull(a) {
         return a !== null;
     }
@@ -37,6 +39,7 @@
                 name: "start-live",
                 selector: "#broadcaster-tool-toolbox-container > div.broadcaster-tool-toolbox > div.broadcaster-tool-toolbox__main-controls > button.btn-success:enabled",
                 text: "開始",
+                isStartLive: true,
             },
             // コラボ承認
             {
@@ -47,7 +50,7 @@
         ];
         var els = selectors
             .map(function (_a) {
-            var selector = _a.selector, name = _a.name, text = _a.text;
+            var selector = _a.selector, name = _a.name, text = _a.text, isStartLive = _a.isStartLive;
             var el = document.querySelector(selector);
             if (el !== null &&
                 el instanceof HTMLButtonElement &&
@@ -55,6 +58,7 @@
                 return {
                     name: name,
                     el: el,
+                    isStartLive: isStartLive,
                 };
             }
             else {
@@ -66,6 +70,18 @@
         if (data !== undefined) {
             console.log("buttons", new Date(), els);
             console.log("[Twitcasting Auto Restart]", "auto click:", data.name, data.el);
+            if (data.isStartLive) {
+                if (allowClickLive) {
+                    allowClickLive = false;
+                    setTimeout(function () {
+                        allowClickLive = true;
+                    }, 1000 * 20);
+                }
+                else {
+                    console.log("allowClickLive is false");
+                    return;
+                }
+            }
             data.el.click();
         }
     }
