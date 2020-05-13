@@ -118,7 +118,7 @@
 
     setTimeout(() => {
       autoClick();
-    }, 500);
+    }, 1500);
   });
 
   observer.observe(document, {

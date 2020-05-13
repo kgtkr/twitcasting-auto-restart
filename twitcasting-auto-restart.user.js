@@ -91,7 +91,7 @@
         }
         setTimeout(function () {
             autoClick();
-        }, 500);
+        }, 1500);
     });
     observer.observe(document, {
         childList: true,
